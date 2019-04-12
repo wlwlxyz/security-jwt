@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lan.demo.mapper.PermissionMapper">
+
+    <resultMap id="PermissionDtoMap" type="com.lan.demo.dto.PermissionDto">
+        <result property="permissionUrl" column="permission_url"></result>
+        <collection property="roleNames" ofType="java.lang.String">
+            <result column="role_name"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="PermissionDtoMap">
+        SELECT
+        p.permission_id,
+            p.permission_url,
+            r.role_name
+        FROM
+            role_permission rp
+            LEFT JOIN role r on r.role_id = rp.role_id
+            LEFT JOIN permission p on p.permission_id = rp.permission_id
+            WHERE rp.role_permission_status = 0 and r.role_status = 0 and p.permission_status = 0
+    </select>
+</mapper>
